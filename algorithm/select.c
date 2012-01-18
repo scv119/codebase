@@ -104,12 +104,12 @@ void __debug(int * array, int from, int end){
 }
 
 int main(){
-    int array[1000];
+    int array[100000];
     int i;
 
-    for ( i = 0 ; i < 1000; i ++){
-        array[i] = 999 - i;
+    for ( i = 0 ; i < 100000; i ++){
+        array[i] = 99999 - i;
     }
 //    printf("%d", select ( array, 5, 3, 0, 5));
-    printf("%d", select ( array, 40, 1000));
+    printf("%d", select ( array, 5000, 100000));
 }
