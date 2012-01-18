@@ -36,7 +36,7 @@ int select(int * array, int k, int size)
     int big_p = size-1;
 
     while ( small_p <=  big_p ){
-        value = array[small_p];
+        int value = array[small_p];
         if (value < mid){
             small_p ++;
         }
@@ -61,7 +61,7 @@ int select(int * array, int k, int size)
     printf("k=%d, pos=%d\n", k, pos);
  
     if(k > pos)
-        return select(array + pos + 1, k - pos - 1 ,length - pos - 1 );
+        return select(array + pos + 1, k - pos - 1 ,size - pos - 1 );
     else if(k < pos)
         return select(array, k,  pos);
     else return mid;
@@ -104,12 +104,12 @@ void __debug(int * array, int from, int end){
 }
 
 int main(){
-    int array[100];
+    int array[1000];
     int i;
 
-    for ( i = 0 ; i < 100; i ++){
-        array[i] = 99 - i;
+    for ( i = 0 ; i < 1000; i ++){
+        array[i] = 999 - i;
     }
 //    printf("%d", select ( array, 5, 3, 0, 5));
-    printf("%d", select ( array, 100, 40, 0, 100));
+    printf("%d", select ( array, 40, 1000));
 }
