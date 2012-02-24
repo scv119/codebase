@@ -4,7 +4,6 @@ public class CleanChar{
             return;
 
         int tail = 1;
-
         for (int i = 1; i < str.length; i ++){
             int j  = 0;
             for( ; j < tail ;j ++)
