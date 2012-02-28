@@ -54,8 +54,61 @@ public class BinaryTree{
         return null;
     }
 
-    public Node del(int value){
-        
-    }
+    public Node delete(Node node, Node parent){
+        boolean isLeftChild = true;
+        if (parent != null){
+            if(parent.leftChild != node)
+                isLeftChild = false;
+        }
+        if(node.leftChild == null){
+            if(parent != null) {
+                if(isLeftChild)
+                    parent.leftChild = node.rightChild;
+                else
+                    parent.rightChild = node.rightChild;
+            }
+            else{
+                root = node.rightChild;
+            }
+        }
+        else if(node.rightChild == null){
+            if(parent != null){
+                if(isLeftChild)
+                    parent.leftChild = node.leftChild;
+                else
+                    parent.rightChild = node.leftChild;
+            }
+            else{
+                root = node.leftChild;
+            }
+        }
+        else{
+            Node successorParent = node;
+            Node successor = node.rightChild;
 
+            while(successor.leftChild != null){
+                successorParent = successor;
+                successor = successor.leftChild;
+            }
+    
+            Node successorRightChild = successor.rightChild;
+            
+            if(parent != null){
+                if(isLeftChild)
+                    parent.leftChild = successor;
+                else
+                    parent.rightChild = successor;
+            }
+            else{
+                root = successor;
+            }
+
+            successor.leftChild = node.leftChild;   
+            
+            if(successorParent != node){
+                successor.rightChild = node.rightChild;
+                successorParent.leftChild = successorRightChild;
+            }
+        }
+    }
 }
