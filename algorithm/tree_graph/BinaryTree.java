@@ -11,6 +11,10 @@ public class BinaryTree{
         root = null;
     }
 
+    public Node getRoot(){
+        return root;
+    }
+
     public void add(int value){
         
         Node cur = root;
@@ -18,7 +22,10 @@ public class BinaryTree{
         boolean left = true;
         
         while(cur != null){
-            if (value < cur.value){
+            if(value == cur.value){
+                return;
+            }
+            else if (value < cur.value){
                 pre = cur;
                 cur = cur.leftChild; 
                 left = true;
@@ -39,6 +46,8 @@ public class BinaryTree{
             else
                 pre.rightChild = cur;
         }
+        else 
+            root = cur;
     }
 
     public Node find(int value){
@@ -54,7 +63,7 @@ public class BinaryTree{
         return null;
     }
 
-    public Node delete(Node node, Node parent){
+    public void delete(Node node, Node parent){
         boolean isLeftChild = true;
         if (parent != null){
             if(parent.leftChild != node)
@@ -110,5 +119,29 @@ public class BinaryTree{
                 successorParent.leftChild = successorRightChild;
             }
         }
+    }
+
+    public void inOrderTravasal(Node node){
+        if(node != null){
+            inOrderTravasal(node.leftChild);
+            System.out.print(node.value + " ");
+            inOrderTravasal(node.rightChild);
+        }
+    }
+
+    public static void main(String args[]){
+        BinaryTree t = new BinaryTree();
+        for(int i = 0 ;i < 15; i ++){
+            t.add(i);
+        }
+
+        t.inOrderTravasal(t.getRoot());
+        System.out.println();
+        System.out.println(t.find(5).value); 
+        
+        Node node = t.find(5);
+        t.delete(node.rightChild, node);
+        t.inOrderTravasal(t.getRoot());
+        System.out.println();
     }
 }
