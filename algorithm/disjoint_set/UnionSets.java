@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class UnionSets{
     public static class Node{
         int value;
@@ -12,7 +14,7 @@ public class UnionSets{
     }
     
     public void makeSet(int value){
-        Node node = new Node()
+        Node node = new Node();
         node.rank = 0;
         node.value = value;
         node.parent = node;
@@ -20,9 +22,9 @@ public class UnionSets{
     }
 
     public Integer findSet(int value){
-        if(!nodeMap.contains(value))
+        if(!nodeMap.containsKey(value))
             return null;
-        return findSet(node).value;
+        return findSet(nodeMap.get(value)).value;
     }
 
     private Node findSet(Node node){
@@ -42,9 +44,10 @@ public class UnionSets{
         Node p2 = findSet(node2);
         int value;        
 
-        if(p1.rank > p2.rank)
+        if(p1.rank > p2.rank){
             p2.parent = p1;
             value = p1.value;
+        }
         else{
             p1.parent = p2;
             p2.rank = Math.max(p2.rank, p1.rank + 1);
@@ -53,5 +56,19 @@ public class UnionSets{
 
         return value;
     }
+    
+    public static void main(String args[]){
+        UnionSets us = new UnionSets();
+        for(int i = 0 ; i < 16; i ++){
+            us.makeSet(i);
+        }
+        us.union(1,2);
+        us.union(3,2);
+        us.union(4,5);
+        us.union(14,2);
+        us.union(4,2);
 
+        System.out.println(us.findSet(2) + " "+  us.findSet(14) +" "+  us.findSet(3));
+
+    }
 }
