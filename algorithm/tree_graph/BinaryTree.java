@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class BinaryTree{
     public static class Node{
         int value;
@@ -121,12 +123,44 @@ public class BinaryTree{
         }
     }
 
-    public void inOrderTravasal(Node node){
+    public static void inOrderTravasal(Node node){
         if(node != null){
             inOrderTravasal(node.leftChild);
             System.out.print(node.value + " ");
             inOrderTravasal(node.rightChild);
         }
+    }
+
+    public static int minDepth(Node node){
+        if(node == null)
+            return 0;
+        return Math.min(1 + minDepth(node.leftChild), 1 + minDepth(node.rightChild));
+    }
+
+    public static int maxDepth(Node node){
+        if(node == null)
+            return 0;
+        return Math.max(1 + maxDepth(node.leftChild), 1 + maxDepth(node.rightChild));
+    }
+
+    public static List<List<Node>> findLevelLinkedList(Node start){
+        List<List<Node>> result= new ArrayList<List<Node>>();
+        List<Node> cur = new LinkedList<Node>();
+        List<Node> tmp = null;
+        cur.add(start);
+
+        while(cur.size()>0){
+            result.add(cur);
+            tmp = cur; 
+            cur = new LinkedList<Node>();
+            for(Node node:tmp){
+                if(node.leftChild != null)
+                    cur.add(node.leftChild);
+                if(node.rightChild != null)
+                    cur.add(node.rightChild);
+            }
+        }
+        return result;
     }
 
     public static void main(String args[]){
@@ -135,13 +169,16 @@ public class BinaryTree{
             t.add(i);
         }
 
-        t.inOrderTravasal(t.getRoot());
+        inOrderTravasal(t.getRoot());
         System.out.println();
         System.out.println(t.find(5).value); 
+        System.out.println(maxDepth(t.getRoot()));
+        System.out.println(minDepth(t.getRoot()));
+
         
         Node node = t.find(5);
         t.delete(node.rightChild, node);
-        t.inOrderTravasal(t.getRoot());
+        inOrderTravasal(t.getRoot());
         System.out.println();
     }
 }
