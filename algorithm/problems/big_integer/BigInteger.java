@@ -37,8 +37,8 @@ public class BigInteger{
     public BigInteger multi(BigInteger n){
         this.positive = (this.positive == n.positive);
         List<Integer> result = new ArrayList<Integer>();
-        for(int i = n.values.size() - 1; i >= 0 ; i --){
-            List<Integer> tmp = multi(this.values, n.values.get(i), n.values.size() - 1 - i);
+        for(int i = 0; i < n.values.size() ; i ++){
+            List<Integer> tmp = multi(this.values, n.values.get(i), i);
             add(result, tmp);
         }
         this.values = result;
@@ -47,8 +47,8 @@ public class BigInteger{
 
     private List<Integer> multi(List<Integer> a, int n, int offset){
         List<Integer>result = new ArrayList<Integer>();
-        for(int i  = a.size() - 1; i >= 0 ; i--){
-            List<Integer> tmp = multi(a.get(i), n, a.size() - 1 - i);
+        for(int i  = 0; i < a.size() ; i++){
+            List<Integer> tmp = multi(a.get(i), n, i);
             add(result, tmp);
         }
         List<Integer>off_result = new ArrayList<Integer>(result.size() + offset);
@@ -86,9 +86,9 @@ public class BigInteger{
                 s_v = 0;
 
             if(i < a.size())
-                a_v = 0;
-            else
                 a_v = a.get(i);
+            else
+                a_v = 0;
             
             long rs = (long)s_v + a_v + tmp;
             s_v = (int)(rs%DIV);
@@ -129,8 +129,8 @@ public class BigInteger{
     }
     
     public static void main(String args[]){
-        BigInteger b1 = new BigInteger("10");
-        BigInteger b2 = new BigInteger("999999999");
+        BigInteger b1 = new BigInteger("12345678900000000000");
+        BigInteger b2 = new BigInteger("-987654321000000000000");
         System.out.println(b1);
         System.out.println(b2);
         System.out.println(b1.multi(b2));
