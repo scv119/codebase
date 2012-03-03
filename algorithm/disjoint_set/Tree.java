@@ -64,6 +64,7 @@ public class Tree{
         for(Node child:node.children){
             lca(child, pairs, us, visited, ancestor);
             us.union(node.value, child.value);
+            //us.profile();
             ancestor.put(us.findSet(child.value), node.value);
         }
         
@@ -72,10 +73,10 @@ public class Tree{
             if (pairs.get(pair) != -1)
                 continue;
             if(pair.i == node.value && visited.contains(pair.j)){
-                pairs.put(pair, us.findSet(pair.j));
+                pairs.put(pair, ancestor.get(us.findSet(pair.j)));
             }
             else if(pair.j == node.value && visited.contains(pair.i)){
-                pairs.put(pair, us.findSet(pair.i));
+                pairs.put(pair, ancestor.get(us.findSet(pair.i)));
             }
         }
     }

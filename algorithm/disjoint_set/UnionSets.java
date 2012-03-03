@@ -32,6 +32,18 @@ public class UnionSets{
             node.parent = findSet(node.parent);
         return node.parent;
     }
+    
+    public void profile(){
+    	for(int key:nodeMap.keySet()){
+    		Node node = nodeMap.get(key);
+    		while(node.parent != node){
+    			System.out.print(node.value + " -> ");
+    			node = node.parent;
+    		}
+    		System.out.println(node.rank + "|" + node.value);
+    	}
+    	
+    }
 
     public Integer union(int value1, int value2){
         Node node1,node2;
@@ -62,11 +74,17 @@ public class UnionSets{
         for(int i = 0 ; i < 16; i ++){
             us.makeSet(i);
         }
+
+        
         us.union(1,2);
         us.union(3,2);
         us.union(4,5);
         us.union(14,2);
         us.union(4,2);
+        
+
+        us.profile();
+        
 
         System.out.println(us.findSet(2) + " "+  us.findSet(14) +" "+  us.findSet(3));
 

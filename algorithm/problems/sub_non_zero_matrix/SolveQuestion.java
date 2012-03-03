@@ -84,7 +84,7 @@ public class SolveQuestion{
         }
 
         SolveQuestion sq = new SolveQuestion(matrix);
-        sq.mark(0,1).mark(0, 2).mark(0,3).mark(0,4).mark(1, 2).mark(1,3).mark(2, 2).mark(2, 3).mark(3,2);
+        sq.mark(1,1).mark(1, 2).mark(1,3).mark(1,4).mark(2, 2).mark(2,3).mark(3, 2).mark(3, 3).mark(4,2).mark(0,2);
         System.out.println(sq.solve());
     }
 }
