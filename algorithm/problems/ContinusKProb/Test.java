@@ -77,8 +77,8 @@ public class Test{
     
 
     public static void main(String args[]){
-        System.out.println(fun(14,7,3));
-        System.out.println(brute_force(14,7,3));
+        System.out.println(fun(7,14,9));
+        System.out.println(brute_force(7,14,9));
         System.out.println(f1_count+" "+f2_count);
     }
 }
