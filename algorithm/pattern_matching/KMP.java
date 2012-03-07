@@ -1,6 +1,33 @@
 public class KMP{
     public static int match(String pattern, String source){
-        return 0;    
+        if(pattern == null || pattern.length() == 0 || source == null || source.length() == 0){
+            return -1;
+        }
+        int next[] = new int[pattern.length()];
+        get_next(pattern, next);
+
+        int p_i = 0;
+        int s_i = 0;
+        while(true){
+            if(p_i >= pattern.length())
+                return s_i - p_i;
+
+            if(s_i >= source.length())
+                return -1;
+            
+            if(pattern.charAt(p_i) == source.charAt(s_i)){
+                p_i ++;
+                s_i ++;
+                continue;
+            }
+
+            if(p_i != 0){
+                p_i = next[p_i - 1];
+            }
+            else{
+                s_i ++;
+            }
+        }
     }
 
     private static void get_next(String pattern, int[] next){
@@ -35,5 +62,7 @@ public class KMP{
             System.out.print(next[i]+" ");
         }
         System.out.println();
+
+        System.out.println(match(s,"aaaabcabdabcabdabcabc"));
     }
 }
