@@ -81,8 +81,54 @@ public class AdjacencyListGraph{
 
     public static void main(String args[]){
         AdjacencyListGraph graph = new AdjacencyListGraph(6);  
-        graph.add(0,1).add(0,2).add(2,1).add(1,3).add(3,2).add(4,3).add(4,5).add(5,5);
-        graph.DFS();
+           graph.add(0,1)
+                .add(1,2)
+                .add(0,3)
+                .add(1,3)
+                .add(1,4)
+                .add(2,4)
+                .add(3,4)
+                .add(3,5)
+                .add(4,5);
+        graph.topologicalSort();
+    }
+
+    public void topologicalSort(){
+        List<Integer> result = new ArrayList<Integer>();        
+        Set<Integer> discovered = new HashSet<Integer>();
+        int[]        parent  = new int[size];
+        
+        for(int i = 0 ;i < size; i ++){
+            if(discovered.contains(i))
+                continue;
+            
+            parent[i] = -1;
+            ts_visit(i, parent, discovered, result);
+        }
+
+        for(Integer i:result)
+            System.out.println(i);
+    }
+
+    private void ts_visit(int i , int[] parent, Set<Integer>discovered, List<Integer> result){
+        discovered.add(i);        
+        for(Integer j:adjacencyList.get(i)){
+            if(discovered.contains(j)){
+                int p = i;
+                while(p != j){
+                    if(parent[p] != -1)
+                        p = parent[p];
+                    else
+                        break;
+                }
+                if(p == j)
+                    System.out.println("LOOP discovered");
+                continue;
+            }
+            parent[j] = i;
+            ts_visit(j, parent, discovered, result);
+        }
+        result.add(i);
     }
 }
 
