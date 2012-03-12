@@ -1,7 +1,7 @@
 public class Kruskal{
-    private int size;
-    private int[][] edges;
-    private int edge_size;
+    protected int size;
+    protected int[][] edges;
+    protected int edge_size;
 
     public Kruskal(int size){
         this.size = size;
@@ -56,13 +56,13 @@ public class Kruskal{
         return result;
     }
 
-    private static class edge{
+    public static class edge{
         int u;
         int v;
         int weight;
     }
 
-    private void sort(edge[] n_edges, int start, int end){
+    public void sort(edge[] n_edges, int start, int end){
         if(start >= end)
             return;
         int i = start+1;
