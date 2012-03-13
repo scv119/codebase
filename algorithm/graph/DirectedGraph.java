@@ -5,7 +5,7 @@ public class DirectedGraph{
     private List<List<Node>> adjList;
 
     private class Node{
-        class Node(int id, int w){
+        public Node(int id, int w){
             this.id = id;
             this.w = w;
         }
@@ -25,11 +25,12 @@ public class DirectedGraph{
     public DirectedGraph add(int from, int to, int weight){
         if(from < 0 || from >= v_size || to < 0 || to >= v_size || weight <= 0)
             throw new RuntimeException("from,to, weight is not allowed");
-        adjList.get(from).add(new Node(to, weight))
+        adjList.get(from).add(new Node(to, weight));
         e_size ++;
+        return this;
     }
 
-    public int[][] mr-floyd-warshall()
+    public int[][] mr_floyd_warshall()
     {
         int [][][] map = new int[v_size][v_size][v_size];
         for(int i = 0 ; i <v_size; i++)
@@ -78,7 +79,7 @@ public class DirectedGraph{
         return map[from][to][k];
     }
 
-    public int[] bellman-ford(int s){
+    public int[] bellman_ford(int s){
         int[] distance = new int[v_size];
         int[] prev     = new int[v_size];
 
@@ -115,7 +116,7 @@ public class DirectedGraph{
         heap.buildHeap(distance);
 
         while(discovered.size() < v_size){
-           Node node = heap.pop_mine();          
+           Node node = heap.pop_min();          
            discovered.add(node.id);
            int idx = node.id;
            List<Node> adj = adjList.get(idx);
@@ -123,8 +124,8 @@ public class DirectedGraph{
                 if(discovered.contains(next.id)){
                     continue; 
                 }
-                if(distance[next.id].w > distance[node.id] + next.w){
-                    distance[next.id].w = distance[node.id] + next.w;
+                if(distance[next.id].w > (distance[node.id].w + next.w)){
+                    distance[next.id].w = distance[node.id].w + next.w;
                     prev[next.id] = node.id;
                     heap.decrease(next);
                 }
@@ -148,7 +149,7 @@ public class DirectedGraph{
             indexMap = new HashMap<Node, Integer>(size);
         }
 
-        private buildHeap(Node[] array){
+        private void buildHeap(Node[] array){
             for(Node node:array){
                 this.array[cur_size++] = node;
                 indexMap.put(node, cur_size - 1);
@@ -159,7 +160,7 @@ public class DirectedGraph{
         }
 
         private void decrease(Node node){
-            if(!indexMap.contains(node))
+            if(!indexMap.containsKey(node))
                 return;
             int idx = indexMap.get(node); 
             while(idx != 0){
@@ -185,9 +186,9 @@ public class DirectedGraph{
         }
 
         private void heapify_down(Node node){
-            if(!indexMap.contains(node))
+            if(!indexMap.containsKey(node))
                 return;
-            int idx = indexMap.get(nodex);
+            int idx = indexMap.get(node);
             int lchild = idx*2 + 1;
             int rchild = idx*2 + 2;
             if(rchild < cur_size){
@@ -214,8 +215,8 @@ public class DirectedGraph{
             Node tmp = array[i];
             array[i] = array[j];
             array[j] = tmp;
-            indexMap.get(array[i]) = i;
-            indexMap.get(array[j]) = j;
+            indexMap.put(array[i],  i);
+            indexMap.put(array[j],  j);
         }
     }
     
