@@ -47,6 +47,57 @@ public class DirectedGraph{
        return result;
     }
 
+    public int[][] dp_floyd_warshall()
+    {
+        int [][][] map = new int[v_size][v_size][v_size];
+        for(int i = 0 ; i <v_size; i++)
+            for(int j  = 0 ; j < v_size; j++)
+                for(int k = 0 ; k < v_size; k++)
+                    map[i][j][k] = -1;
+
+        for(int k = 0 ; k < v_size; j++){
+            for(int i = 0; i < v_size; i++)
+                for(int j = 0 ;j < v_size; j++){
+                    if(k == 0){
+                        map[i][j][k] = w(i, j);
+                    }
+                    else{
+                        int value1 = map[i][j][k-1];
+                        int value2_1 = map[i][k][k-1];
+                        int value2_2 = map[k][j][k-1];
+                        int value2  = 0;
+                        if(value2_1 == Integer.MAX_VALUE || value2_2 == Integer.MAX_VALUE){
+                            value2 = Integer.MAX_VALUE;
+                         }
+                        else{
+                            value2 = value2_1 + value2_2;
+                        }
+                        map[i][j][k] = value1<value2?value1:value2;
+                    }
+                }
+
+        }
+
+        int[][] result = new int[v_size][v_size];
+        for(int i = 0 ; i < v_size; i ++){
+            for(int j = 0 ; j< v_size; j ++){
+                result[i][j] = map[i][j][v_size-1]; 
+            }
+       }
+       return result;
+    }
+
+    private int w(int i, int j){
+            List<Node> adj = adjList.get(i);
+            for(Node node:adj){
+                if(node.id == j)
+                {
+                    return node.w;
+                }
+            }
+            return Integer.MAX_VALUE;
+    }
+
     private int fw(int from, int to, int k, int[][][]map){
         if(map[from][to][k] != -1)
             return map[from][to][k];
