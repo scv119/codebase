@@ -41,7 +41,7 @@ public class DirectedGraph{
         int[][] result = new int[v_size][v_size];
        for(int i = 0 ; i < v_size; i ++){
             for(int j = 0 ; j< v_size; j ++){
-                result[i][j] = fw(i, j, v_size, map);
+                result[i][j] = fw(i, j, v_size - 1, map);
             }
        }
        return result;
@@ -55,9 +55,13 @@ public class DirectedGraph{
                 for(int k = 0 ; k < v_size; k++)
                     map[i][j][k] = -1;
 
-        for(int k = 0 ; k < v_size; j++){
+        for(int k = 0 ; k < v_size; k++){
             for(int i = 0; i < v_size; i++)
                 for(int j = 0 ;j < v_size; j++){
+                    if(i == j){
+                        map[i][j][k] = 0;
+                    }
+                    else
                     if(k == 0){
                         map[i][j][k] = w(i, j);
                     }
@@ -139,9 +143,13 @@ public class DirectedGraph{
             prev[i]     = -1;
         }
 
+        distance[s] = 0;
+
         for(int i = 1 ; i < v_size; i++){
             for(int j = 0 ; j < v_size;j ++){
                 for(Node adj:adjList.get(j)){
+                    if(distance[j] == Integer.MAX_VALUE)
+                        continue;
                     if(distance[adj.id] > (distance[j] + adj.w)){
                         distance[adj.id] = distance[j] + adj.w;
                     }
@@ -175,6 +183,8 @@ public class DirectedGraph{
                 if(discovered.contains(next.id)){
                     continue; 
                 }
+                if(distance[node.id].w == Integer.MAX_VALUE)
+                    continue;
                 if(distance[next.id].w > (distance[node.id].w + next.w)){
                     distance[next.id].w = distance[node.id].w + next.w;
                     prev[next.id] = node.id;
@@ -273,7 +283,39 @@ public class DirectedGraph{
     
 
     public static void main(String args[]){
-        DirectedGraph g = new DirectedGraph(10);  
-        
+        DirectedGraph g = new DirectedGraph(5);  
+        g.add(0, 1, 10)
+         .add(1, 2, 1)
+         .add(0, 3, 5)
+         .add(1, 3, 2)
+         .add(3, 1, 3)
+         .add(3, 2, 9)
+         .add(3, 4, 2)
+         .add(4, 0, 7)
+         .add(2, 4, 4)
+         .add(4, 2, 6);
+
+        int[] result = g.dijkstra(0);
+        g.print(result);
+        result       = g.bellman_ford(0);
+        g.print(result);
+        int[][] result1 = g.mr_floyd_warshall();
+        g.print1(result1);
+        result1 = g.dp_floyd_warshall();
+        g.print1(result1);
+    }
+
+    private void print(int[] arr){
+        for(int i = 0 ; i< arr.length; i++)
+        {
+            System.out.println(i + " "+ arr[i]);
+        }
+    }
+    private void print1(int[][] arr){
+        for(int i = 0 ; i< arr.length; i++)
+        {
+            for(int j = 0 ; j < arr.length; j ++)
+            System.out.println(i + " " + j + " "+ arr[i][j]);
+        }
     }
 }
