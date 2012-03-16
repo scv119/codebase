@@ -22,14 +22,14 @@ public class RBTree<K,V>{
             value = v;
         }
         Color color;
-        Node p;
+        Node<K,V> p;
         K    key;
         V    value;
-        Node l;
-        Node r;
+        Node<K,V> l;
+        Node<K,V> r;
     }
 
-    private Node root;
+    private Node<K,V> root;
     private Comparator<K> c;
 
     public RBTree(){
@@ -51,7 +51,7 @@ public class RBTree<K,V>{
     }
 
     public void put(K k, V v){
-        Node node = new Node(k,v);
+        Node<K,V> node = new Node<K,V>(k,v);
         insert(node);
     }
 
@@ -91,13 +91,13 @@ public class RBTree<K,V>{
         }
     }
 
-    private void fix_insert(Node node){
-        Node p = node.p;
+    private void fix_insert(Node<K,V>node){
+        Node<K,V> p = node.p;
         if(p.color == Color.BLACK)
             return;
         if(p == p.p.l){
         //p is left child of p.p
-            Node uncle = p.p.r;
+            Node<K,V> uncle = p.p.r;
             if(uncle.color == Color.RED){
                 if(p.p == root){
                     p.color = Color.BLACK;
@@ -111,17 +111,17 @@ public class RBTree<K,V>{
                 }
             }
             else{
-                Node anc = p.p;
+                Node<K,V> anc = p.p;
                if(p.r == node){
-                    rotate(node, true);
+                    lRotate(p);
                }
-               rotate(anc.l, false);
+               rRotate(anc);
                anc.color = Color.RED;   
                anc.p.color = Color.BLACK;
             }
         }
         else{
-            Node uncle = p.p.l;
+            Node<K,V> uncle = p.p.l;
             if(uncle.color == Color.RED){
                 if(p.p == root){
                     p.color = Color.BLACK;
@@ -135,11 +135,11 @@ public class RBTree<K,V>{
                 }
             }
             else{
-                Node anc = p.p;
+                Node<K,V> anc = p.p;
                if(p.l == node){
-                    rotate(node, false);
+                    rRotate(p);
                }
-               rotate(anc.r, true);
+               lRotate(anc);
                anc.color = Color.RED;   
                anc.p.color = Color.BLACK;
             }
@@ -150,35 +150,50 @@ public class RBTree<K,V>{
         return null;
     }
 
-    private void rotate(Node a, boolean left){
-        Node p = a.p;
-        Node b = null;
-        if(left){
-            b = a.r;
-            Node y = p.l;
-            a.r    = y;
-            y.p    = a;
-            b.l    = a;
-            a.p    = b;
-            b.p    = p;
+    private void lRotate(Node<K,V> x){
+       Node<K,V> y = x.r;
+       x.r = y.l;
+       if(y.l != NIL)
+    	   y.l.p = x;
+       Node<K, V> p = x.p;
+       if(x == root){
+    	   root = y;
+    	   y.p = NIL;
+       }
+       else{
+    	   if(p.l == x){
+    		   p.l = y;
+    	   }
+    	   else{
+    		   p.r = y;
+    	   }
+    	   y.p = p;
+       }
+       y.l = x;
+       x.p = y;
+    }
+    
+    private void rRotate(Node<K,V> x){
+    	Node<K,V> y = x.l;
+        x.l = y.r;
+        if(y.r != NIL)
+     	   y.r.p = x;
+        Node<K, V> p = x.p;
+        if(x == root){
+     	   root = y;
+     	   y.p = NIL;
         }
         else{
-            b = a.l;
-            Node y = p.r;
-            a.l    = y;
-            y.p    = a;
-            b.r    = a;
-            a.p    = b;
-            b.p    = p;
+     	   if(p.l == x){
+     		   p.l = y;
+     	   }
+     	   else{
+     		   p.r = y;
+     	   }
+     	   y.p = p;
         }
-        if(p == NIL)
-            root = b;
-        else{
-            if (p.l == a)
-                p.l = b;
-            else
-                p.r = b;
-        }
+        y.r = x;
+        x.p = y;
     }
 
     public boolean validate_RB(){
@@ -186,7 +201,7 @@ public class RBTree<K,V>{
         return result[2] == 0;
     }
 
-    private int[] blackMaxMinSize(Node a){
+    private int[] blackMaxMinSize(Node<K,V> a){
         int[] result = new int[3];  
         if (a == NIL)
         {
@@ -226,9 +241,11 @@ public class RBTree<K,V>{
 
     public static void main(String args[]){
         RBTree<Integer,Integer> tree = new RBTree<Integer,Integer>();
-        for(int i = 0 ; i < 3; i ++)
+        int j = -1;
+        for(int i = 0 ; i < 10; i ++)
         {
-            tree.put(i,i);
+            tree.put(i * j,i);
+            j *= -1;
             System.out.println(tree.validate_RB());
             tree.dumpTree();
         }
