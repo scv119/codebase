@@ -1,3 +1,5 @@
+package srm114;
+
 import java.util.*;
 public class Lottery{
 	public String[] sortByOdds(String[] para){

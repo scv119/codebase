@@ -1,3 +1,5 @@
+package srm114;
+
 public class BinaryCode{
 	private static final String NONE = "NONE";
 	public static String[] decode(String message){
