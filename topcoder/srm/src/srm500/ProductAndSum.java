@@ -1,87 +1,77 @@
 package srm500;
 
-import java.util.*;
-import java.util.regex.*;
-import java.text.*;
 import java.math.*;
 
 
 public class ProductAndSum
 {
-	private int modulo = 500500573;
-	private BigInteger bModulo = BigInteger.valueOf(modulo);
-	
+
+	int modulo = 500500573;
+	BigInteger bModulo = BigInteger.valueOf(modulo);
+	BigInteger ONE  = BigInteger.valueOf(1);
+	BigInteger ZERO = BigInteger.valueOf(0);
+	BigInteger TEN  = BigInteger.valueOf(10);
+
 	public int getSum(int p2, int p3, int p5, int p7, int S)
 	{
-		S = S - 5 * p5 - 7 * p7;
-		if(S < 0)
-			return 0;
-		int p1,p4,p6,p8,p9;
-		int input[] = new int[10];
+		int p[] = new int[10];
+		p[7] = p7;
+		p[5] = p5;
+		S = S - p[5] * 5 - p[7] * 7;
 		int result = 0;
-		for(p9 = 0; p9 <= (p3/2); p9 ++)
-		for(p8 = 0; p8 <= (p2/3); p8 ++)
-		for(p4 = 0; p4 <= ((p2 - p8 *3 )/2); p4 ++)
-		for(p6 = 0; p6 <= (p3 - p9*2) && p6 <= (p2 - p8 * 3 - p4 *2); p6++){
-			int _p2 = p2 - 3 * p8 - 2 * p4 - p6;
-			int _p3 = p3 - 2 * p9 - p6;
-			p1 = S - p9 * 9 - p8 * 8 - p4 * 4 - p6 * 6 - _p3 * 3 - _p2 * 2;
-			if(p1 < 0)
+		for(p[8] = 0 ; p[8] <= (p2/3) ; p[8] ++)
+		for(p[4] = 0 ; p[4] <= ((p2 - p[8] * 3)/2) ; p[4] ++)
+		for(p[9] = 0 ; p[9] <= (p3/2) ; p[9] ++)
+		for(p[6] = 0 ; p[6] <= (p2 - p[8] * 3 - p[4] * 2) && p[6] <= (p3 - p[9] *2 ); p[6] ++){
+			p[3] = p3 - 2 * p[9] - p[6];
+			p[2] = p2 - 2 * p[4] - 3 * p[8];
+			p[1] = S - 2 * p[2] - 3 * p[3] - 4 * p[4] - 6 * p[6] - 8 * p[8] - 9 * p[9];
+			if(p[1] < 0 )
 				continue;
-			input[0] = 0;
-			input[1] = p1; input[2] = _p2; input[3] = _p3; input[4] = p4; input[5] = p5; input[6] = p6; input[7] = p7;
-			input[8] = p8; input[9] = p9;
-			int sum = 0;
-			for(Integer v : input)
-				sum += v;
-			result += left(input, sum);
-			result = result % modulo;
 			
-				
+			result = (result + get_mod(p))%modulo; 
 		}
 		return result;
 	}
 	
-	private int left(int p[], int sum){
-		BigInteger result = BigInteger.valueOf(0);
-		for(int i = 1 ; i <= 9 ; i++){
-			if(p[i] > 0)
-			{
-				p[i] --;
-				result = result.add(c(p, sum - 1).multiply(BigInteger.valueOf(i)));
-				p[i] ++;
+	
+	private int get_mod(int p[]){
+		int sum = 0;
+		for(int i:p)
+			sum += i;
+		BigInteger result = ZERO;
+		for(int i = 1 ; i < 10 ; i++){
+			if(p[i] > 0){
+				p[i] -- ;
+				result = result.add(c(p, sum -1).multiply(BigInteger.valueOf(i)));
+				p[i] ++ ;
 			}
 		}
-		BigInteger mul = BigInteger.valueOf(1);
-		for(int i = 1 ; i < sum ; i++){
-			mul = mul.multiply(BigInteger.valueOf(10)).add(BigInteger.valueOf(1));
+		
+		BigInteger mul = ONE;
+		for(int i = 1 ; i < sum ; i ++){
+			mul = mul.multiply(TEN).add(ONE);
 		}
-		result = result.multiply(mul);
-		result = result.mod(bModulo);
+		result = result.multiply(mul).mod(bModulo);
 		return Integer.parseInt(result.toString());
 	}
 	
-	private BigInteger c(int p[], int sum){
-		if(sum == 0)
-			return BigInteger.valueOf(1);
-		BigInteger result = BigInteger.valueOf(1);
-		for(int i = 1; i <= 9 ; i ++){
+	BigInteger c(int p[] , int sum){
+		BigInteger result = ONE;
+		for(int i = 1 ; i < 10 ; i ++){
 			if(p[i] == 0)
 				continue;
-			int k = p[i];
-			for(int j = 0; j < k; j ++){
+			for(int j = 0 ; j < p[i]; j ++)
 				result = result.multiply(BigInteger.valueOf(sum - j));
-			}
-			for(int j = k ; j>= 1 ; j--){
+			for(int j = p[i] ; j > 0 ; j --)
 				result = result.divide(BigInteger.valueOf(j));
-			}
-			sum = sum - k;
+			sum = sum - p[i];
 		}
 		return result;
 	}
 	
 	public static void main(String args[]){
 		ProductAndSum a = new ProductAndSum();
-		System.out.println(a.getSum(2, 0,0,0, 5));
+		System.out.println(a.getSum(0, 0, 0, 0, 10));
 	}
 }
