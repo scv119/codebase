@@ -91,6 +91,7 @@ public class EightNumber{
         Node find = null;
         while(q.size() > 0){
             Node node = q.poll();
+            System.out.println("q's statu" + node.sState());
             for(Integer state:node.otherState()){
                 if(queued.contains(state))
                     continue;
@@ -120,6 +121,6 @@ public class EightNumber{
     }
     public static void main(String args[]){
         EightNumber en = new EightNumber();
-        en.solve(102453786, 123456780);
+        en.solve(412583706, 123456780);
     }
 }

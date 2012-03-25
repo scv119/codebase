@@ -59,7 +59,7 @@ public class ProductAndSum
 	BigInteger c(int p[] , int sum){
 		BigInteger result = ONE;
 		for(int i = 1 ; i < 10 ; i ++){
-			if(p[i] == 0)2
+			if(p[i] == 0)
 				continue;
 			for(int j = 0 ; j < p[i]; j ++)
 				result = result.multiply(BigInteger.valueOf(sum - j));
