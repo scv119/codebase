@@ -1,3 +1,5 @@
+package srm496;
+
 import java.util.*;
 public class OneDimBall{
     int [][] edges;
@@ -49,6 +51,8 @@ public class OneDimBall{
                     if(right[f] >= 0)
                         sec.add(right[f]);
                 }
+
+                System.out.println(cc.size() + " " + sec.size());
                 if(cc.size() == sec.size()){
                     result *= 1;
                 }
@@ -60,6 +64,7 @@ public class OneDimBall{
                     result *= sec.size();
                 }
             }
+            
             count += result;
         }
         return count;
@@ -68,8 +73,9 @@ public class OneDimBall{
     void dfs(){
         visited = new HashSet<Integer>();
         scc     = new ArrayList<Set<Integer>>();
-        Set<Integer> cc = new HashSet<Integer>();
+        Set<Integer> cc;
         for(int i =0 ; i < edges.length; i ++){
+        	cc = new HashSet<Integer>();
             dfs(i, cc);
             if(cc.size() > 0)
                 scc.add(cc);
@@ -89,6 +95,6 @@ public class OneDimBall{
 
     public static void main(String args[]){
         OneDimBall ball = new OneDimBall();       
-        System.out.println(ball.solve(new int[]{6,2,4}, new int[]{1,2,3,4,5,6,7,8}));
+        System.out.println(ball.solve(new int[]{6,2,4}, new int[]{1,2,3,4,5,7,8}));
     }
 }
